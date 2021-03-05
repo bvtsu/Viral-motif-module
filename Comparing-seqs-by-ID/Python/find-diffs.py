@@ -31,13 +31,15 @@ def ID_keys_to_text(in_dict: Dict[str, str], output_name: str):
         for key in in_dict:
             f.write("{}\n".format(key))
 
-def return_dict_concat(in_dict1: Dict[str, str],in_dict2: Dict[str, str],in_dict3: Dict[str, str]) -> Dict[str, str]:
+def return_dict_concat_fasta(in_dict1: Dict[str, str],in_dict2: Dict[str, str],in_dict3: Dict[str, str]) -> Dict[str, str]:
     combined_dict=[]
     combined_dict=[in_dict1, in_dict2, in_dict3] #Store all the dicts as a list
     final_dict = defaultdict(set) #defaultdict(set) to prepare a dict without duplicates
-    for d in combined_dict: #iterate through each of the dicts
-        for key, value in d.items(): #take the key, value pair
-            final_dict[key].add(value) #relocate key, value pairs from each dict to the new, combined dict
+    with open("outputs/combined.fasta", "w") as output_file: #create a new fasta file in the outputs folder
+        for d in combined_dict: #iterate through each of the dicts
+            for key, value in d.items(): #take the key, value pair
+                final_dict[key].add(value) #relocate key, value pairs from each dict to the new, combined dict
+                output_file.write(">{0}\n{1}\n\n".format(key,list(value)[0])) #Store them into the new fasta file, separated by newlines
     return(final_dict)
 
 #Make output folder, if it doesn't already exist
@@ -58,9 +60,11 @@ vipr_dict=fasta_to_dict(vipr_fasta, "vipr") #Use the function defined above to s
 genbank_only = { key : genbank_dict[key] for key in set(genbank_dict) - set(vipr_dict) } #subtract vipr pairs from genbank pairs, then use the key from the pairs to regenerate a dict of unique genbank seqs
 vipr_only = { key : vipr_dict[key] for key in set(vipr_dict) - set(genbank_dict) } #subtract genbank pairs from vipr pairs, then use the key from the pairs to regenerate a dict of unique vipr seqs
 shared = { key : vipr_dict[key] for key in set(vipr_dict) & set(genbank_dict) } #take only the pairs that exist in both dicts, use the key from the pairs to regenerate a dict of shared seqs
+shared_by_fasta = {key: vipr_dict[key] for key in vipr_dict if key in genbank_dict and vipr_dict[key] == genbank_dict[key]} #Didn't finish all of this, but one could also compare fasta values to remove dupes/see similarities between lists
 print("# of unique entries for genbank: ",len(genbank_only)) #Print total uniques for genbank
 print("# of unique entries for vipr: ",len(vipr_only)) #Print total uniques for vipr
 print("# of shared entries: ",len(shared)) #Print total shared
+print("# of shared entries by fasta: ",len(shared_by_fasta)) #Print total shared
 ID_keys_to_text(genbank_only,"genbank_only.txt")
 ID_keys_to_text(vipr_only,"vipr_only.txt")
 ID_keys_to_text(shared,"shared.txt")
@@ -68,11 +72,7 @@ ID_keys_to_text(shared,"shared.txt")
 
 try:
     if sys.argv[3]=="all": #if you add "all" as a third term following the python script name
-        all_dicts = return_dict_concat(genbank_only,vipr_only,shared) #use the function defined above to concat all the dicts
+        all_dicts = return_dict_concat_fasta(genbank_only,vipr_only,shared) #use the function defined above to concat all the dicts
         print("# of combined entries returned".format(),len(all_dicts)) #Print total combined (differences from either end and shared)
-        with open("outputs/combined.fasta", "w") as output_file: #create a new fasta file in the outputs folder
-            for key, value in all_dicts.items(): #Take each key, value pair
-                #print('{0} corresponds to {1}'.format(key, list(value)[0]))
-                output_file.write(">{0}\n{1}\n\n".format(key,list(value)[0])) #Store them into the new fasta file, separated by newlines
 except: #if you don't add "all"
     print("No combined fasta requested.") #Report that no new fasta file was created
