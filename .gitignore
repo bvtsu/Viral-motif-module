@@ -1,0 +1,5 @@
+#output files
+*.out
+
+#output folders
+Comparing-seqs-by-ID/Examples/output/

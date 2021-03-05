@@ -9,9 +9,11 @@ In your desired github folder:
 
 ```git clone https://github.com/bvtsu/Viral-motif-module```
 
-```cd Viral-motif-module```
+```cd Viral-motif-module/Comparing-seqs-by-ID/```
 
 Let's first do this with the bash script, ```find-diff.sh```.
+
+```cd Bash/```
 
 ```chmod +x find-diff.sh```
 
