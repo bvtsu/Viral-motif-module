@@ -2,6 +2,8 @@
 Training module to identify viral motifs within the human genome
 
 ## PART I: Which dataset should we be using?
+First step is to download the sequences of interest from either genbank or vipr. I'll add more notes on this later, but the critical example details include using the protein databases of either genbank or vipr and filtering by kubovirus polyproteins (size ~1800-4000 AAs, or 3x as much for the CDS, remove dupes)
+
 Just by looking at GenBank and ViPR fasta files, we see that all ViPR sequences have an associated GenBank ID.
 We could assume that ViPR is completely encompassed by GenBank, but let's actually do the comparison.
 
