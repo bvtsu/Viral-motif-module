@@ -36,5 +36,5 @@ upset_data = from_memberships(
 )
 st.set_option('deprecation.showPyplotGlobalUse', False)
 plot(upset_data)
-plt.suptitle('GenBank vs ViPR Kubo Polypros')
+plt.suptitle('{0}'.format(sys.argv[4]))
 st.pyplot()

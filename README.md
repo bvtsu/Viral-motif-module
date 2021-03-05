@@ -40,7 +40,7 @@ As a bonus, you can also request to create a new fasta file containing the merge
 
 As an added bonus, if you have streamlit installed:
 
-```streamlit run id_upsetplot.py outputs/genbank_only.txt outputs/vipr_only.txt outputs/shared.txt```
+```streamlit run id_upsetplot.py outputs/genbank_only.txt outputs/vipr_only.txt outputs/shared.txt "Title of your plot"```
 
 <img src="https://github.com/daugherty-lab/Viral-motif-module/blob/main/img/genbank_vs_vipr.png?raw=true" width="50%">
 
