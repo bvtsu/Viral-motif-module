@@ -19,10 +19,14 @@ Let's first do this with the bash script, ```find-diff.sh```.
 
 ```./find-diff.sh /path/to/genbank-fasta-file /path/to/vipr-fasta-file```
 
-```cd Examples/output```
+```cd ../Examples/output```
 
 ```wc -l compared*```
 
 You may find that there are actually some ViPR sequences that don't overlap with the GenBank list. If you individual search up these sequences, you'll likely find that they are still being classified and may be broadly associated with the viral family, rather than the genus we're interested in.
 
-Now let's do this with python...
+Now let's do this with python. Although addressing the question takes a bit more code, storing the fasta information is way more straightforward. Assuming you're in the output folder:
+
+```cd ../../Python```
+
+```python find-diffs.py /path/to/genbank-fasta-file /path/to/vipr-fasta-file all```
