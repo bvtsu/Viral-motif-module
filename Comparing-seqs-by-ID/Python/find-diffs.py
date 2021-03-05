@@ -26,10 +26,14 @@ def fasta_to_dict(filename: str, fasta_type: str) -> Dict[str, str]:
         fasta[key]=''.join(value) #overwrite the existing list of broken up fasta seqs with a concatenated form, easier to write to file later
     return(fasta) #Return the fasta dict
 
-#Probably didn't need to make a function for this, since we're only using this once
-def return_dict_concat(dict1,dict2,dict3) -> Dict[str, str]:
+def ID_keys_to_text(in_dict: Dict[str, str], output_name: str):
+    with open("outputs/{}".format(output_name), "w") as f:
+        for key in in_dict:
+            f.write("{}\n".format(key))
+
+def return_dict_concat(in_dict1: Dict[str, str],in_dict2: Dict[str, str],in_dict3: Dict[str, str]) -> Dict[str, str]:
     combined_dict=[]
-    combined_dict=[dict1, dict2, dict3] #Store all the dicts as a list
+    combined_dict=[in_dict1, in_dict2, in_dict3] #Store all the dicts as a list
     final_dict = defaultdict(set) #defaultdict(set) to prepare a dict without duplicates
     for d in combined_dict: #iterate through each of the dicts
         for key, value in d.items(): #take the key, value pair
@@ -57,6 +61,10 @@ shared = { key : vipr_dict[key] for key in set(vipr_dict) & set(genbank_dict) } 
 print("# of unique entries for genbank: ",len(genbank_only)) #Print total uniques for genbank
 print("# of unique entries for vipr: ",len(vipr_only)) #Print total uniques for vipr
 print("# of shared entries: ",len(shared)) #Print total shared
+ID_keys_to_text(genbank_only,"genbank_only.txt")
+ID_keys_to_text(vipr_only,"vipr_only.txt")
+ID_keys_to_text(shared,"shared.txt")
+
 
 try:
     if sys.argv[3]=="all": #if you add "all" as a third term following the python script name
@@ -65,6 +73,6 @@ try:
         with open("outputs/combined.fasta", "w") as output_file: #create a new fasta file in the outputs folder
             for key, value in all_dicts.items(): #Take each key, value pair
                 #print('{0} corresponds to {1}'.format(key, list(value)[0]))
-                output_file.write(">" + key + "\n" +list(value)[0] + "\n\n") #Store them into the new fasta file, separated by newlines
+                output_file.write(">{0}\n{1}\n\n".format(key,list(value)[0])) #Store them into the new fasta file, separated by newlines
 except: #if you don't add "all"
     print("No combined fasta requested.") #Report that no new fasta file was created
