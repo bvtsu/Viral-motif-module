@@ -42,7 +42,8 @@ As an added bonus, if you have streamlit installed:
 
 ```streamlit run id_upsetplot.py outputs/genbank_only.txt outputs/vipr_only.txt outputs/shared.txt```
 
-![upsetplot](https://github.com/daugherty-lab/Viral-motif-module/blob/main/img/genbank_vs_vipr.png?raw=true)
+<img src="https://github.com/daugherty-lab/Viral-motif-module/blob/main/img/genbank_vs_vipr.png?raw=true" width="50%">
+
 ## PART II: Creating the motif using your annotated reference sequence as a guide
 
 TBD
