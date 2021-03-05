@@ -39,7 +39,7 @@ def return_dict_concat_fasta(in_dict1: Dict[str, str],in_dict2: Dict[str, str],i
         for d in combined_dict: #iterate through each of the dicts
             for key, value in d.items(): #take the key, value pair
                 final_dict[key].add(value) #relocate key, value pairs from each dict to the new, combined dict
-                output_file.write(">{0}\n{1}\n\n".format(key,list(value)[0])) #Store them into the new fasta file, separated by newlines
+                output_file.write(">{0}\n{1}\n\n".format(key,value)) #Store them into the new fasta file, separated by newlines
     return(final_dict)
 
 #Make output folder, if it doesn't already exist
@@ -57,6 +57,7 @@ vipr_fasta=sys.argv[2] #Take the second term (should be vipr) that follows the p
 genbank_dict=fasta_to_dict(genbank_fasta, "genbank") #Use the function defined above to store the genbank fasta as a dict
 vipr_dict=fasta_to_dict(vipr_fasta, "vipr") #Use the function defined above to store the vipr fasta as a dict
 
+#I should've made the first four lines of this section into a function
 genbank_only = { key : genbank_dict[key] for key in set(genbank_dict) - set(vipr_dict) } #subtract vipr pairs from genbank pairs, then use the key from the pairs to regenerate a dict of unique genbank seqs
 vipr_only = { key : vipr_dict[key] for key in set(vipr_dict) - set(genbank_dict) } #subtract genbank pairs from vipr pairs, then use the key from the pairs to regenerate a dict of unique vipr seqs
 shared = { key : vipr_dict[key] for key in set(vipr_dict) & set(genbank_dict) } #take only the pairs that exist in both dicts, use the key from the pairs to regenerate a dict of shared seqs
