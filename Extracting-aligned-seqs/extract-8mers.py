@@ -45,6 +45,7 @@ sites_in_raw_fasta=[170,540,763,1152,1317,1652,1747,1774,1964] #Apparently VIKQG
 list_of_cleavage_sites=['LQRQGNSV','LAPQHWKT','LTSQTLTE','IRRQGLLT','LEPQGLKD','IRRQGNRV','QEPQAAYS','IQRQGISP','TTQQSLIV'] #Apparently VIKQGAAS is cut by 3CD
 
 #Add an initial gap count to the raw fasta positions of the sites to pre-emptively speed up sliding window match
+#Is this really necessary? Only shaves off milli-seconds of time
 initial_gap_count=0
 for x in range(0,len(aligned_dict['NP_047200'])):
     if aligned_dict['NP_047200'][x]=='-':
@@ -60,6 +61,7 @@ add_gaps=0 #value will increase with each encountered gap (-), to accurately sto
 site_map={}
 while len(list_of_cleavage_sites) > 0: #Run this loop as long as the cleavage list size is greater than zero
     #As cleavage sites are found within a sliding window of 60 amino acids...store site info and delete sites from cleavage list
+    #This actually only works if your first sequence is NOT in the first 60 amino acids of the polyprotein -- Try to break it
     if list_of_cleavage_sites[0] in aligned_dict['NP_047200'][n_slider+add_gaps:n_slider+60+add_gaps].replace('-',''): 
         print("Found",list_of_cleavage_sites[0],'at',n_slider+add_gaps,':',n_slider+60+add_gaps)
         site_slider=-1 #Define slider that will act as a quering index starting at the end of the seq, to move in reverse
